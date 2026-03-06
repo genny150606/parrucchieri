@@ -8,7 +8,101 @@ document.addEventListener('DOMContentLoaded', () => {
     initFaqAccordion();
     initForms();
     loadContactInfo();
+    initCookieBanner();
+    initPageTransitions();
 });
+
+/* ─── Page Transitions ─── */
+function initPageTransitions() {
+    // 1. Entrance Animation (Page Load)
+    const overlay = document.createElement('div');
+    overlay.className = 'luxury-transition';
+    overlay.innerHTML = `
+        <div class="luxury-layer luxury-layer-1 sweep-right"></div>
+        <div class="luxury-layer luxury-layer-2 sweep-right"></div>
+        <div class="luxury-layer luxury-layer-3 sweep-right"></div>
+        <div class="luxury-logo-wrapper show">
+            <h2 class="curtain-logo">R&S <span>Parrucchieri</span></h2>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    document.body.style.opacity = '1';
+
+    // Start entrance animation (hide logo, slide layers right)
+    setTimeout(() => {
+        const logo = overlay.querySelector('.luxury-logo-wrapper');
+        if (logo) {
+            logo.classList.remove('show');
+            logo.classList.add('hide');
+        }
+
+        // Wait for logo to fade before moving curtains
+        setTimeout(() => {
+            overlay.querySelectorAll('.sweep-right').forEach(layer => {
+                layer.classList.add('go');
+            });
+
+            // Remove from DOM when done
+            setTimeout(() => {
+                overlay.remove();
+            }, 1600);
+        }, 300);
+    }, 400); // delay to admire the logo before it sweeps away
+
+    // 2. Exit Animation on Navigation
+    document.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Check modifier keys for new tab
+            if (e.ctrlKey || e.shiftKey || e.metaKey || e.button === 1) return;
+
+            const href = link.getAttribute('href');
+            const target = link.getAttribute('target');
+
+            // Ignore anchors, external links, or JS triggers
+            if (!href || href.startsWith('#') || href.startsWith('javascript') || href.startsWith('mailto:') || href.startsWith('tel:') || target === '_blank') {
+                return;
+            }
+
+            // Only act if it's an internal HTML page navigation
+            if (href.endsWith('.html') || href === '/' || href === 'index.html') {
+                e.preventDefault();
+
+                // Create exit curtain
+                const exitOverlay = document.createElement('div');
+                exitOverlay.className = 'luxury-transition';
+                exitOverlay.innerHTML = `
+                    <div class="luxury-layer luxury-layer-1 sweep-enter"></div>
+                    <div class="luxury-layer luxury-layer-2 sweep-enter"></div>
+                    <div class="luxury-layer luxury-layer-3 sweep-enter"></div>
+                    <div class="luxury-logo-wrapper">
+                        <h2 class="curtain-logo">R&S <span>Parrucchieri</span></h2>
+                    </div>
+                `;
+                document.body.appendChild(exitOverlay);
+
+                // Force reflow
+                void exitOverlay.offsetWidth;
+
+                // Animate layers to cover screen
+                exitOverlay.querySelectorAll('.sweep-enter').forEach(layer => {
+                    layer.classList.add('go');
+                });
+
+                // Show logo after layers cover the screen
+                setTimeout(() => {
+                    const logo = exitOverlay.querySelector('.luxury-logo-wrapper');
+                    if (logo) logo.classList.add('show');
+                }, 800);
+
+                // Navigate when fully covered
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 1300);
+            }
+        });
+    });
+}
 
 /* ─── Fetch Contact Info ─── */
 async function loadContactInfo() {
@@ -120,18 +214,24 @@ function initNavbar() {
 
 /* ─── Scroll Animations ─── */
 function initScrollAnimations() {
-    const observer = new IntersectionObserver((entries) => {
+    window.scrollObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+                // Add tiny delay for smoother chained feeling
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, 50);
+            } else {
+                // Remove to allow repeating animation on scroll up/down
+                entry.target.classList.remove('visible');
             }
         });
     }, {
-        threshold: 0.1,
+        threshold: 0.15,
         rootMargin: '0px 0px -50px 0px'
     });
 
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    document.querySelectorAll('.fade-in, .reveal').forEach(el => window.scrollObserver.observe(el));
 
     // Counter animation for stats
     document.querySelectorAll('.stat-number').forEach(el => {
@@ -223,4 +323,75 @@ function initForms() {
             }, 3000);
         });
     });
+}
+
+/* ─── Cookie Banner ─── */
+function initCookieBanner() {
+    if (!localStorage.getItem('cookie_consent')) {
+        const banner = document.createElement('div');
+        banner.className = 'cookie-banner fade-in';
+        banner.innerHTML = `
+            <div class="cookie-content">
+                <p>Utilizziamo i cookie per migliorare la tua esperienza sul nostro sito e offrirti servizi personalizzati. 
+                Continuando a navigare, accetti la nostra <a href="privacy-policy.html">Privacy & Cookie Policy</a>.</p>
+                <div class="cookie-buttons">
+                    <button id="acceptCookies" class="btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Accetta Tutti</button>
+                    <button id="rejectCookies" class="btn-secondary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Solo Necessari</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(banner);
+
+        // Add CSS dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            .cookie-banner {
+                position: fixed;
+                bottom: 0; left: 0; right: 0;
+                background: rgba(13, 13, 13, 0.95);
+                backdrop-filter: blur(10px);
+                border-top: 1px solid var(--admin-border, rgba(212,175,55,0.2));
+                padding: 1.5rem 2rem;
+                z-index: 9999;
+                display: flex;
+                justify-content: center;
+                box-shadow: 0 -10px 30px rgba(0,0,0,0.8);
+            }
+            .cookie-content {
+                max-width: 1200px;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 2rem;
+                animation: fadeInUp 0.5s ease;
+            }
+            .cookie-content p { margin: 0; font-size: 0.9rem; color: #a0a0a0; line-height: 1.5; }
+            .cookie-content a { color: #d4af37; text-decoration: underline; font-weight:500; }
+            .cookie-buttons { display: flex; gap: 1rem; flex-shrink: 0; }
+            
+            @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+            
+            @media (max-width: 768px) {
+                .cookie-content { flex-direction: column; text-align: center; }
+                .cookie-buttons { width: 100%; justify-content: center; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        document.getElementById('acceptCookies').addEventListener('click', () => {
+            localStorage.setItem('cookie_consent', 'all');
+            banner.style.opacity = '0';
+            banner.style.transform = 'translateY(100%)';
+            banner.style.transition = '0.3s ease';
+            setTimeout(() => banner.remove(), 300);
+        });
+        document.getElementById('rejectCookies').addEventListener('click', () => {
+            localStorage.setItem('cookie_consent', 'essential');
+            banner.style.opacity = '0';
+            banner.style.transform = 'translateY(100%)';
+            banner.style.transition = '0.3s ease';
+            setTimeout(() => banner.remove(), 300);
+        });
+    }
 }

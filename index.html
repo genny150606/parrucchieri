@@ -4,10 +4,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';">
   <meta name="description"
-    content="R&S Parrucchieri — Luxe Salon. L'arte dell'eleganza nel cuore di Napoli. Styling di lusso, colorazioni signature e trattamenti spa esclusivi.">
-  <title>R&S Parrucchieri — L'Arte dell'Eleganza</title>
+    content="Hair Love Parrucchieri — Il miglior salone di parrucchieri a Napoli. Styling di lusso, colorazioni signature e trattamenti spa esclusivi.">
+  <meta name="keywords"
+    content="parrucchiere napoli, salone di bellezza napoli, taglio capelli napoli, colorazione capelli, styling di lusso, hair love">
+  <meta property="og:title" content="Hair Love Parrucchieri — L'Arte della Bellezza a Napoli">
+  <meta property="og:description"
+    content="Vivi l'apice dell'hairstyling di lusso e della cura su misura a Napoli con Hair Love. Prenota ora.">
+  <meta property="og:type" content="website">
+  <title>Hair Love Parrucchieri — L'Arte della Bellezza</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chat.css">
 </head>
 
 <body>
@@ -15,7 +24,9 @@
   <!-- ═══ NAVBAR ═══ -->
   <nav class="navbar" id="navbar">
     <div class="nav-container">
-      <a href="index.html" class="nav-logo">R&S <span>Parrucchieri</span></a>
+      <a href="index.html" class="nav-logo">
+        <img src="images/logo.png" alt="Hair Love Logo" style="height: 50px; width: auto;">
+      </a>
       <div class="nav-links" id="navLinks">
         <a href="index.html" class="active">Home</a>
         <a href="servizi.html">Servizi</a>
@@ -62,19 +73,19 @@
   <!-- ═══ STATS ═══ -->
   <section class="stats-bar">
     <div class="stats-grid">
-      <div class="stat-item fade-in">
+      <div class="stat-item reveal fade-up">
         <div class="stat-number">500+</div>
         <div class="stat-label">Clienti Soddisfatti</div>
       </div>
-      <div class="stat-item fade-in">
+      <div class="stat-item reveal fade-up delay-100">
         <div class="stat-number">10</div>
         <div class="stat-label">Anni di Esperienza</div>
       </div>
-      <div class="stat-item fade-in">
+      <div class="stat-item reveal fade-up delay-200">
         <div class="stat-number">12</div>
         <div class="stat-label">Master Stylists</div>
       </div>
-      <div class="stat-item fade-in">
+      <div class="stat-item reveal fade-up delay-300">
         <div class="stat-number">100%</div>
         <div class="stat-label">Organic Products</div>
       </div>
@@ -85,10 +96,10 @@
   <section class="section philosophy" id="philosophy">
     <div class="section-container">
       <div class="philosophy-grid">
-        <div class="philosophy-image fade-in">
+        <div class="philosophy-image reveal fade-right">
           <img src="images/philosophy.png" alt="Master stylist at work">
         </div>
-        <div class="philosophy-content fade-in">
+        <div class="philosophy-content reveal fade-left delay-200">
           <div class="section-tag">La Nostra Filosofia</div>
           <h2>La Bellezza come Capolavoro</h2>
           <p>Crediamo nell'armonia tra bellezza e arte, dove ogni taglio è un'espressione unica della tua personalità.
@@ -122,7 +133,7 @@
   <!-- ═══ SERVICES PREVIEW ═══ -->
   <section class="section services-section" id="services">
     <div class="section-container">
-      <div class="section-header fade-in">
+      <div class="section-header reveal fade-up">
         <div class="section-tag">Elite Services</div>
         <h2 class="section-title">I Nostri Servizi</h2>
         <p class="section-subtitle">Ogni servizio è un'esperienza sensoriale unica, studiata per esaltare la tua
@@ -131,7 +142,7 @@
       <div class="services-grid" id="servicesGridHome">
         <p style="text-align: center; width: 100%; grid-column: 1 / -1;">Caricamento servizi in corso...</p>
       </div>
-      <div style="text-align:center; margin-top:2.5rem;" class="fade-in">
+      <div style="text-align:center; margin-top:2.5rem;" class="reveal fade-up delay-200">
         <a href="servizi.html" class="btn-secondary">
           <span class="material-symbols-outlined" style="font-size:1rem">arrow_forward</span>
           Scopri tutti i servizi
@@ -141,7 +152,7 @@
   </section>
 
   <!-- ═══ TESTIMONIAL ═══ -->
-  <section class="testimonial-section fade-in">
+  <section class="testimonial-section reveal zoom-in">
     <div class="testimonial-card">
       <p class="testimonial-quote">"Un'esperienza senza precedenti. Non è solo un taglio di capelli, è un momento di
         puro lusso e rigenerazione."</p>
@@ -152,7 +163,7 @@
 
   <!-- ═══ CTA ═══ -->
   <section class="cta-section">
-    <div class="cta-content fade-in">
+    <div class="cta-content reveal fade-up">
       <h2>Pronto per la tua trasformazione?</h2>
       <p>Posti limitati disponibili per questa settimana. Prenota ora la tua consulenza gratuita.</p>
       <a href="prenotazioni.html" class="btn-primary">
@@ -166,7 +177,9 @@
   <footer class="footer">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="nav-logo">R&S <span>Parrucchieri</span></a>
+        <a href="index.html" class="nav-logo">
+          <img src="images/logo.png" alt="Hair Love Logo" style="height: 40px; width: auto; margin-bottom: 1rem;">
+        </a>
         <p>Dove l'eleganza incontra l'esperienza. Dedicati all'arte della bellezza dal 2014.</p>
         <div class="footer-social">
           <a href="#" class="social-icon" aria-label="Facebook">
@@ -210,9 +223,20 @@
         </div>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2024 R&S Parrucchieri. Tutti i diritti riservati.</span>
-      <span>Designed with ♥ in Napoli</span>
+    <div class="footer-bottom" style="display:flex; flex-direction:column; gap:0.5rem; align-items:center;">
+      <div style="display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center;">
+        <span>© 2024 Hair Love Parrucchieri. Tutti i diritti riservati.</span>
+        <span>P.IVA: 01234567890</span>
+      </div>
+      <div style="display:flex; gap:1rem;">
+        <a href="privacy-policy.html"
+          style="color:var(--text-muted); text-decoration:none; font-size:0.85rem; transition:0.3s;">Privacy & Cookie
+          Policy</a>
+        <a href="privacy-policy.html#termini"
+          style="color:var(--text-muted); text-decoration:none; font-size:0.85rem; transition:0.3s;">Termini e
+          Condizioni</a>
+      </div>
+      <span style="font-size:0.8rem; margin-top:0.5rem;">Designed with ♥ in Napoli</span>
     </div>
   </footer>
 
@@ -220,6 +244,7 @@
   <script src="js/supabase.js"></script>
   <script src="js/servizi.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/chat.js"></script>
 </body>
 
 </html>

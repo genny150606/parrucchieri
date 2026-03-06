@@ -33,12 +33,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return 'health_and_beauty'; // Default
             };
 
-            services.forEach(service => {
+            services.forEach((service, index) => {
                 const card = document.createElement('div');
-                card.className = 'service-card fade-in';
-                // Remove fade-in class temporarily to prevent observer issues if dynamically added after load, 
-                // or we can manually add the 'visible' class so they show up immediately
-                card.classList.add('visible');
+                const delayClass = `delay-${(index % 4) * 100}`;
+                card.className = `service-card reveal fade-up ${delayClass}`;
+
+                // Observe if observer exists, otherwise just show it
+                if (window.scrollObserver) {
+                    window.scrollObserver.observe(card);
+                } else {
+                    card.classList.add('visible');
+                }
 
                 card.innerHTML = `
                     <div class="service-icon">

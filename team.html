@@ -4,10 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';">
     <meta name="description"
-        content="Il Nostro Team — R&S Parrucchieri. Incontra i nostri master stylists: Riccardo, Sofia, Marco ed Elena.">
+        content="Il Nostro Team — R&S Parrucchieri. Incontra i nostri master stylists a Napoli: Riccardo, Sofia, Marco ed Elena.">
+    <meta name="keywords"
+        content="team parrucchieri napoli, hair stylist napoli, master colorist, barbieri napoli, parrucchieri professionisti">
+    <meta property="og:title" content="Il Nostro Team — R&S Parrucchieri">
+    <meta property="og:description" content="Conosci gli esperti di bellezza di R&S Parrucchieri.">
     <title>Il Nostro Team — R&S Parrucchieri</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chat.css">
 </head>
 
 <body>
@@ -47,7 +54,7 @@
             <div class="team-grid">
 
                 <!-- Riccardo Rossi -->
-                <div class="team-card fade-in">
+                <div class="team-card reveal fade-up">
                     <div class="team-card-image">
                         <img src="images/staff-riccardo.png" alt="Riccardo Rossi">
                     </div>
@@ -60,7 +67,7 @@
                 </div>
 
                 <!-- Sofia Bianchi -->
-                <div class="team-card fade-in">
+                <div class="team-card reveal fade-up delay-100">
                     <div class="team-card-image">
                         <img src="images/staff-sofia.png" alt="Sofia Bianchi">
                     </div>
@@ -73,7 +80,7 @@
                 </div>
 
                 <!-- Marco Verdi -->
-                <div class="team-card fade-in">
+                <div class="team-card reveal fade-up delay-200">
                     <div class="team-card-image">
                         <img src="images/staff-marco.png" alt="Marco Verdi">
                     </div>
@@ -86,7 +93,7 @@
                 </div>
 
                 <!-- Elena Neri -->
-                <div class="team-card fade-in">
+                <div class="team-card reveal fade-up delay-300">
                     <div class="team-card-image">
                         <img src="images/staff-elena.png" alt="Elena Neri">
                     </div>
@@ -104,7 +111,7 @@
 
     <!-- ═══ CTA ═══ -->
     <section class="cta-section">
-        <div class="cta-content fade-in">
+        <div class="cta-content reveal fade-up">
             <h2>Pronto per la tua trasformazione?</h2>
             <p>Prenota un appuntamento con uno dei nostri esperti.</p>
             <a href="prenotazioni.html" class="btn-primary">
@@ -160,15 +167,27 @@
                 </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <span>© 2024 R&S Parrucchieri. Tutti i diritti riservati.</span>
-            <span>Designed with ♥ in Napoli</span>
+        <div class="footer-bottom" style="display:flex; flex-direction:column; gap:0.5rem; align-items:center;">
+            <div style="display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center;">
+                <span>© 2024 R&S Parrucchieri. Tutti i diritti riservati.</span>
+                <span>P.IVA: 01234567890</span>
+            </div>
+            <div style="display:flex; gap:1rem;">
+                <a href="privacy-policy.html"
+                    style="color:var(--text-muted); text-decoration:none; font-size:0.85rem; transition:0.3s;">Privacy &
+                    Cookie Policy</a>
+                <a href="privacy-policy.html#termini"
+                    style="color:var(--text-muted); text-decoration:none; font-size:0.85rem; transition:0.3s;">Termini e
+                    Condizioni</a>
+            </div>
+            <span style="font-size:0.8rem; margin-top:0.5rem;">Designed with ♥ in Napoli</span>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/chat.js"></script>
 </body>
 
 </html>

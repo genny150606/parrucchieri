@@ -8,46 +8,52 @@
 
 /* ─── Design Tokens ─── */
 :root {
-  --color-bg:          #0a0a0a;
-  --color-bg-elevated: #111111;
-  --color-bg-card:     #161616;
-  --color-bg-glass:    rgba(22, 22, 22, 0.65);
-  --color-surface:     #1a1a1a;
-  --color-border:      rgba(236, 182, 19, 0.12);
-  --color-border-subtle: rgba(255, 255, 255, 0.06);
-  --color-gold:        #ecb613;
-  --color-gold-light:  #f5d060;
-  --color-gold-dark:   #b8900e;
-  --color-gold-glow:   rgba(236, 182, 19, 0.15);
-  --color-text:        #f0ece4;
-  --color-text-muted:  #9a9590;
-  --color-text-dim:    #6b6560;
-  --color-white:       #ffffff;
-  --color-success:     #4ade80;
-  --color-error:       #f87171;
+  --color-bg: #0d0812;
+  --color-bg-elevated: #150e1b;
+  --color-bg-card: #1c1324;
+  --color-bg-glass: rgba(28, 19, 36, 0.75);
+  --color-surface: #241a2e;
+  --color-border: rgba(197, 140, 133, 0.15);
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-purple: #4b245d;
+  --color-purple-light: #6a3682;
+  --color-purple-dark: #2d1338;
+  --color-rosegold: #c58c85;
+  --color-rosegold-light: #d6aba5;
+  --color-rosegold-dark: #a36d67;
+  --color-accent: var(--color-rosegold);
+  --color-accent-glow: rgba(197, 140, 133, 0.2);
+  --color-text: #f5f2f7;
+  --color-text-muted: #b5a9bc;
+  --color-text-dim: #7d7185;
+  --color-white: #ffffff;
+  --color-success: #4ade80;
+  --color-error: #f87171;
 
-  --font-family:       'Manrope', sans-serif;
-  --radius:            8px;
-  --radius-lg:         16px;
-  --radius-xl:         24px;
-  --radius-full:       9999px;
+  --font-family: 'Manrope', sans-serif;
+  --radius: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
 
-  --shadow-sm:    0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md:    0 4px 24px rgba(0, 0, 0, 0.4);
-  --shadow-lg:    0 8px 48px rgba(0, 0, 0, 0.5);
-  --shadow-gold:  0 4px 30px rgba(236, 182, 19, 0.15);
-  --shadow-glow:  0 0 40px rgba(236, 182, 19, 0.08);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 48px rgba(0, 0, 0, 0.6);
+  --shadow-accent: 0 4px 30px rgba(197, 140, 133, 0.15);
+  --shadow-glow: 0 0 40px rgba(75, 36, 93, 0.15);
 
-  --transition-fast:   0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow:   0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 
-  --max-width:         1200px;
-  --header-height:     80px;
+  --max-width: 1200px;
+  --header-height: 80px;
 }
 
 /* ─── CSS Reset ─── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -56,6 +62,116 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+}
+
+/* ─── Ultra Luxury Page Transition ─── */
+.luxury-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.luxury-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.luxury-layer-1 {
+  background: var(--color-accent);
+  z-index: 1;
+}
+
+.luxury-layer-2 {
+  background: var(--color-bg-elevated);
+  z-index: 2;
+}
+
+.luxury-layer-3 {
+  background: var(--color-bg);
+  z-index: 3;
+}
+
+/* States for "Revealing" the new page (sweeping away to the right) */
+.luxury-layer.sweep-right {
+  transform: translateX(0);
+  transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.luxury-layer.sweep-right.go {
+  transform: translateX(100%);
+}
+
+.sweep-right.luxury-layer-1 {
+  transition-delay: 0.3s;
+}
+
+.sweep-right.luxury-layer-2 {
+  transition-delay: 0.15s;
+}
+
+.sweep-right.luxury-layer-3 {
+  transition-delay: 0s;
+}
+
+/* States for "Covering" the old page (sweeping in from the left) */
+.luxury-layer.sweep-enter {
+  transform: translateX(-100%);
+  transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.luxury-layer.sweep-enter.go {
+  transform: translateX(0);
+}
+
+.sweep-enter.luxury-layer-1 {
+  transition-delay: 0s;
+}
+
+.sweep-enter.luxury-layer-2 {
+  transition-delay: 0.15s;
+}
+
+.sweep-enter.luxury-layer-3 {
+  transition-delay: 0.3s;
+}
+
+.luxury-logo-wrapper {
+  position: relative;
+  z-index: 4;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.luxury-logo-wrapper.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.luxury-logo-wrapper.hide {
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.curtain-logo {
+  font-size: min(10vw, 4rem);
+  font-weight: 800;
+  color: var(--color-white);
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 40px rgba\(197, 140, 133, 0.3\);
+}
+
+.curtain-logo span {
+  color: var(--color-accent);
 }
 
 body {
@@ -74,7 +190,8 @@ a {
   transition: color var(--transition-fast);
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
@@ -84,7 +201,10 @@ img {
   display: block;
 }
 
-button, input, select, textarea {
+button,
+input,
+select,
+textarea {
   font-family: inherit;
   font-size: inherit;
   color: inherit;
@@ -141,7 +261,7 @@ button, input, select, textarea {
 }
 
 .nav-logo span {
-  color: var(--color-gold);
+  color: var(--color-accent);
 }
 
 .nav-links {
@@ -167,13 +287,13 @@ button, input, select, textarea {
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--color-gold);
+  background: var(--color-accent);
   transition: width var(--transition-normal);
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-  color: var(--color-gold);
+  color: var(--color-accent);
 }
 
 .nav-links a:hover::after,
@@ -186,7 +306,7 @@ button, input, select, textarea {
   align-items: center;
   gap: 0.5rem;
   padding: 0.6rem 1.4rem;
-  background: var(--color-gold);
+  background: var(--color-accent);
   color: var(--color-bg) !important;
   font-weight: 700;
   font-size: 0.82rem;
@@ -198,9 +318,9 @@ button, input, select, textarea {
 }
 
 .nav-cta:hover {
-  background: var(--color-gold-light);
+  background: var(--color-rosegold-light);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-gold);
+  box-shadow: var(--shadow-accent);
 }
 
 .nav-cta::after {
@@ -225,9 +345,17 @@ button, input, select, textarea {
   transition: all var(--transition-fast);
 }
 
-.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-.hamburger.active span:nth-child(2) { opacity: 0; }
-.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
 
 /* ═══════════════════════════════════════════
    HERO SECTION
@@ -259,13 +387,11 @@ button, input, select, textarea {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(10, 10, 10, 0.5) 0%,
-    rgba(10, 10, 10, 0.2) 40%,
-    rgba(10, 10, 10, 0.6) 80%,
-    rgba(10, 10, 10, 1) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(10, 10, 10, 0.5) 0%,
+      rgba(10, 10, 10, 0.2) 40%,
+      rgba(10, 10, 10, 0.6) 80%,
+      rgba(10, 10, 10, 1) 100%);
 }
 
 .hero-content {
@@ -281,12 +407,12 @@ button, input, select, textarea {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1.2rem;
-  background: var(--color-gold-glow);
+  background: var(--color-accent-glow);
   border: 1px solid rgba(236, 182, 19, 0.25);
   border-radius: var(--radius-full);
   font-size: 0.78rem;
   font-weight: 600;
-  color: var(--color-gold);
+  color: var(--color-accent);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 1.5rem;
@@ -298,7 +424,7 @@ button, input, select, textarea {
   line-height: 1.08;
   letter-spacing: -0.03em;
   margin-bottom: 1.2rem;
-  background: linear-gradient(135deg, var(--color-white) 30%, var(--color-gold) 100%);
+  background: linear-gradient(135deg, var(--color-white) 30%, var(--color-accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -325,7 +451,7 @@ button, input, select, textarea {
   align-items: center;
   gap: 0.6rem;
   padding: 0.9rem 2rem;
-  background: var(--color-gold);
+  background: var(--color-accent);
   color: var(--color-bg);
   font-weight: 700;
   font-size: 0.9rem;
@@ -338,9 +464,9 @@ button, input, select, textarea {
 }
 
 .btn-primary:hover {
-  background: var(--color-gold-light);
+  background: var(--color-rosegold-light);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-gold);
+  box-shadow: var(--shadow-accent);
 }
 
 .btn-secondary {
@@ -361,9 +487,9 @@ button, input, select, textarea {
 }
 
 .btn-secondary:hover {
-  border-color: var(--color-gold);
-  color: var(--color-gold);
-  background: var(--color-gold-glow);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-accent-glow);
 }
 
 /* ═══════════════════════════════════════════
@@ -391,7 +517,7 @@ button, input, select, textarea {
 .stat-number {
   font-size: 2.5rem;
   font-weight: 800;
-  color: var(--color-gold);
+  color: var(--color-accent);
   line-height: 1;
   margin-bottom: 0.4rem;
 }
@@ -427,7 +553,7 @@ button, input, select, textarea {
   gap: 0.4rem;
   font-size: 0.78rem;
   font-weight: 600;
-  color: var(--color-gold);
+  color: var(--color-accent);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   margin-bottom: 1rem;
@@ -438,7 +564,7 @@ button, input, select, textarea {
   content: '';
   width: 24px;
   height: 1px;
-  background: var(--color-gold);
+  background: var(--color-accent);
   opacity: 0.4;
 }
 
@@ -542,9 +668,9 @@ button, input, select, textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-gold-glow);
+  background: var(--color-accent-glow);
   border-radius: var(--radius);
-  color: var(--color-gold);
+  color: var(--color-accent);
   flex-shrink: 0;
 }
 
@@ -593,7 +719,7 @@ button, input, select, textarea {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light));
+  background: linear-gradient(90deg, var(--color-accent), var(--color-rosegold-light));
   opacity: 0;
   transition: opacity var(--transition-normal);
 }
@@ -614,10 +740,10 @@ button, input, select, textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-gold-glow);
+  background: var(--color-accent-glow);
   border: 1px solid rgba(236, 182, 19, 0.15);
   border-radius: var(--radius);
-  color: var(--color-gold);
+  color: var(--color-accent);
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
 }
@@ -639,7 +765,7 @@ button, input, select, textarea {
 .service-price {
   font-size: 1.3rem;
   font-weight: 800;
-  color: var(--color-gold);
+  color: var(--color-accent);
 }
 
 .service-price small {
@@ -712,7 +838,7 @@ button, input, select, textarea {
 .team-card-role {
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--color-gold);
+  color: var(--color-accent);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin-bottom: 0.8rem;
@@ -750,7 +876,7 @@ button, input, select, textarea {
   left: 50%;
   transform: translateX(-50%);
   font-size: 5rem;
-  color: var(--color-gold);
+  color: var(--color-accent);
   opacity: 0.3;
   line-height: 1;
   font-family: Georgia, serif;
@@ -772,7 +898,7 @@ button, input, select, textarea {
 
 .testimonial-role {
   font-size: 0.85rem;
-  color: var(--color-gold);
+  color: var(--color-accent);
   font-weight: 500;
 }
 
@@ -790,7 +916,7 @@ button, input, select, textarea {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center, var(--color-gold-glow), transparent 70%);
+  background: radial-gradient(ellipse at center, var(--color-accent-glow), transparent 70%);
   pointer-events: none;
 }
 
@@ -838,7 +964,7 @@ button, input, select, textarea {
   transform: translateX(-50%);
   width: 600px;
   height: 600px;
-  background: radial-gradient(ellipse, var(--color-gold-glow), transparent 70%);
+  background: radial-gradient(ellipse, var(--color-accent-glow), transparent 70%);
   pointer-events: none;
   opacity: 0.5;
 }
@@ -919,8 +1045,8 @@ button, input, select, textarea {
 }
 
 .form-input:focus {
-  border-color: var(--color-gold);
-  box-shadow: 0 0 0 3px var(--color-gold-glow);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
 }
 
 .form-input::placeholder {
@@ -955,7 +1081,7 @@ textarea.form-input {
 .btn-submit {
   width: 100%;
   padding: 1rem;
-  background: var(--color-gold);
+  background: var(--color-accent);
   color: var(--color-bg);
   font-weight: 700;
   font-size: 0.95rem;
@@ -968,9 +1094,9 @@ textarea.form-input {
 }
 
 .btn-submit:hover {
-  background: var(--color-gold-light);
+  background: var(--color-rosegold-light);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-gold);
+  box-shadow: var(--shadow-accent);
 }
 
 /* Sidebar */
@@ -993,7 +1119,7 @@ textarea.form-input {
 }
 
 .sidebar-card h3 .material-symbols-outlined {
-  color: var(--color-gold);
+  color: var(--color-accent);
 }
 
 .hours-list {
@@ -1046,7 +1172,7 @@ textarea.form-input {
 }
 
 .location-item .material-symbols-outlined {
-  color: var(--color-gold);
+  color: var(--color-accent);
   font-size: 1.2rem;
 }
 
@@ -1079,7 +1205,7 @@ textarea.form-input {
 }
 
 .contact-info-card .material-symbols-outlined {
-  color: var(--color-gold);
+  color: var(--color-accent);
   font-size: 1.5rem;
   margin-bottom: 0.8rem;
 }
@@ -1141,7 +1267,7 @@ textarea.form-input {
 }
 
 .faq-question .material-symbols-outlined {
-  color: var(--color-gold);
+  color: var(--color-accent);
   transition: transform var(--transition-fast);
   font-size: 1.3rem;
 }
@@ -1213,9 +1339,9 @@ textarea.form-input {
 }
 
 .social-icon:hover {
-  background: var(--color-gold-glow);
-  border-color: var(--color-gold);
-  color: var(--color-gold);
+  background: var(--color-accent-glow);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .footer-col h4 {
@@ -1238,7 +1364,7 @@ textarea.form-input {
 }
 
 .footer-col ul li a:hover {
-  color: var(--color-gold);
+  color: var(--color-accent);
 }
 
 .footer-contact-item {
@@ -1251,7 +1377,7 @@ textarea.form-input {
 }
 
 .footer-contact-item .material-symbols-outlined {
-  color: var(--color-gold);
+  color: var(--color-accent);
   font-size: 1.1rem;
   margin-top: 2px;
 }
@@ -1269,8 +1395,67 @@ textarea.form-input {
 }
 
 /* ═══════════════════════════════════════════
-   SCROLL ANIMATIONS
+   SCROLL ANIMATIONS (WOW)
    ═══════════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: blur(12px);
+  will-change: opacity, transform, filter;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translate(0, 0) scale(1) !important;
+  filter: blur(0);
+}
+
+/* Directions */
+.fade-up {
+  transform: translateY(60px);
+}
+
+.fade-down {
+  transform: translateY(-60px);
+}
+
+.fade-left {
+  transform: translateX(60px);
+}
+
+.fade-right {
+  transform: translateX(-60px);
+}
+
+.zoom-in {
+  transform: scale(0.92);
+}
+
+.zoom-out {
+  transform: scale(1.08);
+}
+
+/* Animation Delays */
+.delay-100 {
+  transition-delay: 100ms;
+}
+
+.delay-200 {
+  transition-delay: 200ms;
+}
+
+.delay-300 {
+  transition-delay: 300ms;
+}
+
+.delay-400 {
+  transition-delay: 400ms;
+}
+
+.delay-500 {
+  transition-delay: 500ms;
+}
+
 .fade-in {
   opacity: 0;
   transform: translateY(30px);
@@ -1395,4 +1580,109 @@ textarea.form-input {
   .stat-number {
     font-size: 2rem;
   }
+}
+
+/* ─── Ultra-Premium Flatpickr Redesign (Elite Cinematic Theme) ─── */
+.flatpickr-calendar {
+  background: rgba(18, 18, 18, 0.85) !important;
+  backdrop-filter: blur(25px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+  border: 1px solid rgba\(197, 140, 133, 0.3\) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(236, 182, 19, 0.1) !important;
+  border-radius: 20px !important;
+  padding: 10px !important;
+  animation: fpFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+@keyframes fpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.flatpickr-day {
+  border-radius: 12px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  color: #fff !important;
+  font-weight: 500 !important;
+  margin: 2px !important;
+}
+
+.flatpickr-day:hover {
+  background: rgba(236, 182, 19, 0.15) !important;
+  transform: scale(1.1) !important;
+  color: var(--color-accent) !important;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-rosegold-dark)) !important;
+  border: none !important;
+  color: #000 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 0 20px rgba(236, 182, 19, 0.4) !important;
+  transform: scale(1.1) !important;
+}
+
+.flatpickr-day.today {
+  border: 1px solid var(--color-accent) !important;
+}
+
+.flatpickr-day.flatpickr-disabled {
+  color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+  color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.flatpickr-months .flatpickr-month {
+  height: 45px !important;
+  color: var(--color-accent) !important;
+  background: transparent !important;
+}
+
+.flatpickr-current-month {
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.flatpickr-weekday {
+  color: rgba(236, 182, 19, 0.6) !important;
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+}
+
+.flatpickr-calendar.arrowTop:before,
+.flatpickr-calendar.arrowTop:after {
+  display: none !important;
+  /* Cleaner look without arrows */
+}
+
+.flatpickr-innerContainer {
+  margin-top: 10px !important;
+}
+
+/* Fix for mobile/glassmorphism rendering */
+.flatpickr-months .flatpickr-prev-month,
+.flatpickr-months .flatpickr-next-month {
+  fill: var(--color-accent) !important;
+  padding: 10px !important;
+  transition: opacity 0.3s !important;
+}
+
+.flatpickr-months .flatpickr-prev-month:hover,
+.flatpickr-months .flatpickr-next-month:hover {
+  opacity: 0.7 !important;
 }

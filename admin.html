@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';">
     <title>Luxe Salon - Admin Portal</title>
     <!-- Fonts and Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -933,13 +935,17 @@
 
                     <!-- 2. BOOKINGS SECTION -->
                     <section id="sec-bookings" class="view-section">
-                        <div class="flex-between" style="margin-bottom: 2rem;">
+                        <div class="flex-between" style="margin-bottom: 2rem; gap: 1rem; flex-wrap: wrap;">
                             <div class="search-container">
                                 <span class="material-symbols-outlined">search</span>
                                 <input type="text" id="searchBookings" class="form-control search-input"
                                     placeholder="Cerca per nome, email, telefono...">
                             </div>
-                            <div class="flex-row">
+                            <div class="flex-row" style="flex-wrap: wrap;">
+                                <select id="filterStaff" class="form-control"
+                                    style="width: auto; background: var(--admin-surface); border-color: var(--admin-border);">
+                                    <option value="">Tutti gli Stylist</option>
+                                </select>
                                 <button class="btn btn-outline" id="exportCsvBtn">
                                     <span class="material-symbols-outlined">download</span> Esporta CSV
                                 </button>
@@ -956,7 +962,8 @@
                                         <th>Data e Ora</th>
                                         <th>Cliente</th>
                                         <th>Contatto</th>
-                                        <th>Servizio Richiesto</th>
+                                        <th>Servizio</th>
+                                        <th>Stylist</th>
                                         <th>Stato</th>
                                         <th class="action-column" style="text-align:right;">Azioni</th>
                                     </tr>

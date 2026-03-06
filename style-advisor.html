@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';">
+    <meta name="description"
+        content="AI Style Advisor — Ottieni consigli personalizzati basati sulla tua fisionomia e armocromia con la nostra intelligenza artificiale.">
+    <title>AI Style Advisor — R&S Parrucchieri</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <style>
+        .advisor-hero {
+            padding: 120px 20px 60px;
+            text-align: center;
+            background: radial-gradient(circle at top, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+        }
+
+        .advisor-container {
+            max-width: 900px;
+            margin: 0 auto 100px;
+            padding: 0 20px;
+        }
+
+        .upload-card {
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .upload-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-gold);
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            padding: 60px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+        }
+
+        .upload-area.dragover {
+            background: rgba(212, 175, 55, 0.05);
+            border-color: var(--color-gold);
+        }
+
+        .upload-icon {
+            font-size: 56px;
+            color: var(--color-gold);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .upload-placeholder h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .upload-placeholder p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .preview-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .preview-image {
+            max-width: 300px;
+            border-radius: 16px;
+            border: 2px solid var(--color-gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-analyze {
+            background: linear-gradient(135deg, var(--color-gold), var(--color-gold-dark));
+            color: #000;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 auto;
+        }
+
+        .btn-analyze:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-analyze:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results-container {
+            display: none;
+            margin-top: 40px;
+            text-align: left;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+        }
+
+        .results-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 15px;
+        }
+
+        .results-header h4 {
+            color: var(--color-gold);
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        .analysis-content {
+            line-height: 1.7;
+            color: #eee;
+        }
+
+        .analysis-content p {
+            margin-bottom: 15px;
+        }
+
+        .analysis-content strong {
+            color: var(--color-gold);
+        }
+
+        .loader {
+            display: none;
+            margin: 20px auto;
+        }
+
+        .privacy-note {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .privacy-note span {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .upload-card {
+                padding: 25px;
+            }
+
+            .upload-area {
+                padding: 40px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ═══ HEADER (Partial copy from main) ═══ -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="nav-logo">R&S <span>Parrucchieri</span></a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="servizi.html">Servizi</a>
+                <a href="team.html">Team</a>
+                <a href="style-advisor.html" class="active">Style Advisor</a>
+                <a href="prenotazioni.html" class="nav-btn">Prenota</a>
+            </div>
+            <button class="menu-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="advisor-hero">
+            <div class="luxury-badge">AI Technology</div>
+            <h1 class="reveal-text">STYLE <span>ADVISOR</span></h1>
+            <p class="subtitle">L'intelligenza artificiale al servizio della tua bellezza. Analizza il tuo volto e
+                ricevi una consulenza personalizzata in pochi secondi.</p>
+        </div>
+
+        <div class="advisor-container">
+            <div class="upload-card">
+                <div id="upload-stage">
+                    <div class="upload-area" id="drop-zone">
+                        <span class="material-symbols-outlined upload-icon">photo_camera</span>
+                        <div class="upload-placeholder">
+                            <h3>Carica il tuo Selfie</h3>
+                            <p>Trascina un'immagine qui o clicca per selezionare</p>
+                        </div>
+                        <input type="file" id="file-input" accept="image/*">
+                    </div>
+                </div>
+
+                <div class="preview-container" id="preview-stage">
+                    <img src="" alt="Preview" class="preview-image" id="img-preview">
+                    <div style="display:flex; gap: 1rem; justify-content:center;">
+                        <button class="btn btn-outline" id="btn-change">
+                            <span class="material-symbols-outlined">refresh</span>Cambia Foto
+                        </button>
+                        <button class="btn-analyze" id="btn-analyze">
+                            <span class="material-symbols-outlined">auto_awesome</span>Inizia Analisi
+                        </button>
+                    </div>
+                </div>
+
+                <div class="loader" id="analysis-loader">
+                    <div class="typing"><span></span><span></span><span></span></div>
+                    <p style="color:var(--color-gold); font-weight:500;">L'AI sta analizzando i tuoi tratti
+                        distintivi...</p>
+                </div>
+
+                <div class="privacy-note">
+                    <span class="material-symbols-outlined">shield_person</span>
+                    La tua privacy è sacra. La foto viene elaborata in modo sicuro e non verrà salvata sul server.
+                </div>
+            </div>
+
+            <div class="results-container" id="results-stage">
+                <div class="results-card">
+                    <div class="results-header">
+                        <span class="material-symbols-outlined"
+                            style="color:var(--color-gold); font-size:2rem;">verified</span>
+                        <h4>Il Tuo Report di Bellezza Personalizzato</h4>
+                    </div>
+                    <div id="analysis-text" class="analysis-content">
+                        <!-- AI Response will be injected here -->
+                    </div>
+                    <div style="margin-top: 30px; text-align: center;">
+                        <a href="prenotazioni.html" class="btn btn-gold">Prenota il servizio consigliato</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            <span>© 2024 R&S Parrucchieri. Designed with ♥ per la tua Bellezza.</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/style-advisor.js"></script>
+</body>
+
+</html>

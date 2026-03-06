@@ -4,10 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';">
     <meta name="description"
-        content="Catalogo Servizi — R&S Parrucchieri. Scopri i nostri servizi esclusivi di hair styling, colorazione, trattamenti spa e molto altro.">
+        content="Catalogo Servizi — R&S Parrucchieri. Scopri i nostri servizi esclusivi di hair styling, colorazione, trattamenti spa e molto altro a Napoli.">
+    <meta name="keywords"
+        content="servizi parrucchiere, taglio capelli, colore capelli, spa capillare, parrucchiere napoli">
+    <meta property="og:title" content="Servizi Esclusivi — R&S Parrucchieri">
+    <meta property="og:description"
+        content="Scopri i nostri servizi per un hair styling di lusso. Prenota la tua seduta.">
     <title>Servizi — R&S Parrucchieri</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chat.css">
 </head>
 
 <body>
@@ -15,7 +23,9 @@
     <!-- ═══ NAVBAR ═══ -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo">R&S <span>Parrucchieri</span></a>
+            <a href="index.html" class="nav-logo">
+                <img src="images/logo.png" alt="Hair Love Logo" style="height: 50px; width: auto;">
+            </a>
             <div class="nav-links" id="navLinks">
                 <a href="index.html">Home</a>
                 <a href="servizi.html" class="active">Servizi</a>
@@ -52,7 +62,7 @@
 
     <!-- ═══ CTA ═══ -->
     <section class="cta-section">
-        <div class="cta-content fade-in">
+        <div class="cta-content reveal fade-up">
             <h2>Pronto per la tua trasformazione?</h2>
             <p>Posti limitati disponibili per questa settimana. Prenota ora la tua consulenza gratuita.</p>
             <a href="prenotazioni.html" class="btn-primary">
@@ -108,9 +118,20 @@
                 </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <span>© 2024 R&S Parrucchieri. Tutti i diritti riservati.</span>
-            <span>Designed with ♥ in Napoli</span>
+        <div class="footer-bottom" style="display:flex; flex-direction:column; gap:0.5rem; align-items:center;">
+            <div style="display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center;">
+                <span>© 2024 R&S Parrucchieri. Tutti i diritti riservati.</span>
+                <span>P.IVA: 01234567890</span>
+            </div>
+            <div style="display:flex; gap:1rem;">
+                <a href="privacy-policy.html"
+                    style="color:var(--text-muted); text-decoration:none; font-size:0.85rem; transition:0.3s;">Privacy &
+                    Cookie Policy</a>
+                <a href="privacy-policy.html#termini"
+                    style="color:var(--text-muted); text-decoration:none; font-size:0.85rem; transition:0.3s;">Termini e
+                    Condizioni</a>
+            </div>
+            <span style="font-size:0.8rem; margin-top:0.5rem;">Designed with ♥ in Napoli</span>
         </div>
     </footer>
 
@@ -118,6 +139,7 @@
     <script src="js/supabase.js"></script>
     <script src="js/servizi.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/chat.js"></script>
 </body>
 
 </html>

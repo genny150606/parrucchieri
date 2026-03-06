@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const upcomingList = document.getElementById('upcomingList');
             const { data: todayBookings } = await supabaseClient
                 .from('bookings')
-                .select(`*, products_services(name)`)
+                .select(`*, products_services(name), staff(name)`)
                 .eq('booking_date', todayStr)
                 .order('booking_time', { ascending: true })
                 .limit(5);
@@ -168,11 +168,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 todayBookings.forEach(b => {
                     const time = b.booking_time.substring(0, 5);
                     const service = b.products_services ? b.products_services.name : '';
+                    const staffName = b.staff ? b.staff.name : 'Nessuno';
                     upcomingList.innerHTML += `
                         <div style="display:flex; justify-content:space-between; align-items:center; padding: 0.8rem; background: rgba(255,255,255,0.02); border-radius: 8px;">
                             <div>
                                 <strong style="color:var(--admin-accent); display:block; margin-bottom:0.2rem;">${time}</strong>
-                                <span>${b.customer_name}</span>
+                                <span>${b.customer_name} <small style="color:var(--admin-text-muted)">(${staffName})</small></span>
                             </div>
                             <span class="badge badge-${b.status}" style="font-size:0.7rem;">${service}</span>
                         </div>
@@ -263,15 +264,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Bookings ---
-    document.getElementById('searchBookings').addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
+    const filterStaffSelect = document.getElementById('filterStaff');
+
+    const applyBookingFilters = () => {
+        const searchTerm = document.getElementById('searchBookings').value.toLowerCase();
+        const staffFilter = filterStaffSelect ? filterStaffSelect.value : '';
         const rows = document.querySelectorAll('#bookingsTable tbody tr');
+
         rows.forEach(row => {
             if (row.children.length === 1) return; // skip loading row
             const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(term) ? '' : 'none';
+            const staffId = row.getAttribute('data-staff-id');
+
+            const matchesSearch = text.includes(searchTerm);
+            const matchesStaff = !staffFilter || staffId === staffFilter;
+
+            row.style.display = (matchesSearch && matchesStaff) ? '' : 'none';
         });
-    });
+    };
+
+    document.getElementById('searchBookings').addEventListener('input', applyBookingFilters);
+    if (filterStaffSelect) filterStaffSelect.addEventListener('change', applyBookingFilters);
+
+    async function populateStaffFilter() {
+        if (!filterStaffSelect) return;
+        const { data: staff } = await supabaseClient.from('staff').select('id, name').eq('is_active', true).order('name');
+        if (staff) {
+            filterStaffSelect.innerHTML = '<option value="">Tutti gli Stylist</option>';
+            staff.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.name;
+                filterStaffSelect.appendChild(opt);
+            });
+        }
+    }
+    populateStaffFilter();
 
     document.getElementById('exportCsvBtn').addEventListener('click', () => {
         const rows = document.querySelectorAll('#bookingsTable tr');
@@ -308,29 +336,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadBookings() {
         const tbody = document.querySelector('#bookingsTable tbody');
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Caricamento in corso...</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Caricamento in corso...</td></tr>';
 
         const { data, error } = await supabaseClient
             .from('bookings')
-            .select(`*, products_services(name)`)
+            .select(`*, products_services(name), staff(id, name)`)
             .order('booking_date', { ascending: false })
             .order('booking_time', { ascending: false });
 
         if (error) {
-            tbody.innerHTML = `<tr><td colspan="6" style="color:var(--admin-danger); text-align:center;">Errore: ${error.message}</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="7" style="color:var(--admin-danger); text-align:center;">Errore: ${error.message}</td></tr>`;
             return;
         }
 
         if (data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--admin-text-muted);">Nessuna prenotazione trovata nel sistema.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color: var(--admin-text-muted);">Nessuna prenotazione trovata nel sistema.</td></tr>';
             return;
         }
 
         tbody.innerHTML = '';
         data.forEach(booking => {
             const tr = document.createElement('tr');
+            tr.setAttribute('data-staff-id', booking.staff_id || '');
 
             const serviceName = booking.products_services ? booking.products_services.name : 'Servizio Rimosso';
+            const staffName = booking.staff ? booking.staff.name : 'Nessuno';
             const dateFormatted = formatDate(booking.booking_date);
             const timeFormatted = booking.booking_time.substring(0, 5);
 
@@ -349,6 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </a>
                 </td>
                 <td><span style="background: rgba(255,255,255,0.05); padding: 0.4rem 0.8rem; border-radius:6px;">${serviceName}</span></td>
+                <td><span style="color:var(--admin-accent); font-weight:500;">${staffName}</span></td>
                 <td>
                     <select class="status-select badge badge-${booking.status}" data-id="${booking.id}" style="border:none;">
                         <option value="pending" ${booking.status === 'pending' ? 'selected' : ''}>⏳ In Attesa</option>
@@ -365,6 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             tbody.appendChild(tr);
         });
+        applyBookingFilters(); // apply initial search/filters if any
 
         document.querySelectorAll('.status-select').forEach(select => {
             select.addEventListener('change', async (e) => {

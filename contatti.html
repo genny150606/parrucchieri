@@ -4,10 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';">
     <meta name="description"
-        content="Contattaci — R&S Parrucchieri. Inviaci un messaggio, trovaci a Napoli o consulta le nostre domande frequenti.">
+        content="Contattaci — R&S Parrucchieri. Inviaci un messaggio, trovaci a Napoli in Via della Moda 12, o consulta le nostre FAQ.">
+    <meta name="keywords"
+        content="contatti parrucchiere napoli, indirizzo R&S parrucchieri, telefono salone napoli, orari parrucchiere napoli">
+    <meta property="og:title" content="Contattaci — R&S Parrucchieri">
+    <meta property="og:description"
+        content="Siamo qui per prenderci cura della tua bellezza. Contatta R&S Parrucchieri.">
     <title>Contattaci — R&S Parrucchieri</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chat.css">
 </head>
 
 <body>
@@ -43,23 +51,23 @@
     <!-- ═══ CONTACT INFO CARDS ═══ -->
     <section class="section" style="padding-top:0">
         <div class="section-container">
-            <div class="contact-info-grid fade-in">
-                <div class="contact-info-card">
+            <div class="contact-info-grid">
+                <div class="contact-info-card reveal fade-up">
                     <span class="material-symbols-outlined">location_on</span>
                     <h4>Indirizzo</h4>
                     <p>Via della Moda 12, 80100 Napoli (NA)</p>
                 </div>
-                <div class="contact-info-card">
+                <div class="contact-info-card reveal fade-up delay-100">
                     <span class="material-symbols-outlined">call</span>
                     <h4>Telefono</h4>
                     <p>+39 02 123 4567</p>
                 </div>
-                <div class="contact-info-card">
+                <div class="contact-info-card reveal fade-up delay-200">
                     <span class="material-symbols-outlined">mail</span>
                     <h4>Email</h4>
                     <p>info@rs-parrucchieri.it</p>
                 </div>
-                <div class="contact-info-card">
+                <div class="contact-info-card reveal fade-up delay-300">
                     <span class="material-symbols-outlined">schedule</span>
                     <h4>Orari</h4>
                     <p>Mar-Gio: 09-19 · Ven: 10-20 · Sab: 09-18</p>
@@ -70,7 +78,7 @@
             <div class="contact-layout">
 
                 <!-- Contact Form -->
-                <div class="form-card fade-in">
+                <div class="form-card reveal fade-right delay-200">
                     <h2>Inviaci un messaggio</h2>
                     <p class="form-subtitle">Compila il form sottostante, ti risponderemo al più presto.</p>
                     <form id="contactForm">
@@ -103,7 +111,7 @@
                 </div>
 
                 <!-- FAQ Section -->
-                <div class="fade-in">
+                <div class="reveal fade-left delay-300">
                     <h2
                         style="font-size:1.5rem; font-weight:700; color:var(--color-white); margin-bottom:1.5rem; display:flex; align-items:center; gap:0.5rem;">
                         <span class="material-symbols-outlined" style="color:var(--color-gold)">help</span>
@@ -242,15 +250,27 @@
                 </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <span>© 2024 R&S Parrucchieri. Tutti i diritti riservati.</span>
-            <span>Designed with ♥ in Napoli</span>
+        <div class="footer-bottom" style="display:flex; flex-direction:column; gap:0.5rem; align-items:center;">
+            <div style="display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center;">
+                <span>© 2024 R&S Parrucchieri. Tutti i diritti riservati.</span>
+                <span>P.IVA: 01234567890</span>
+            </div>
+            <div style="display:flex; gap:1rem;">
+                <a href="privacy-policy.html"
+                    style="color:var(--text-muted); text-decoration:none; font-size:0.85rem; transition:0.3s;">Privacy &
+                    Cookie Policy</a>
+                <a href="privacy-policy.html#termini"
+                    style="color:var(--text-muted); text-decoration:none; font-size:0.85rem; transition:0.3s;">Termini e
+                    Condizioni</a>
+            </div>
+            <span style="font-size:0.8rem; margin-top:0.5rem;">Designed with ♥ in Napoli</span>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/chat.js"></script>
 </body>
 
 </html>

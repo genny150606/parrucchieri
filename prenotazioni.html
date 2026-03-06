@@ -4,10 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';">
     <meta name="description"
-        content="Prenotazioni — R&S Parrucchieri. Prenota il tuo appuntamento per un'esperienza di hair styling di lusso a Napoli.">
+        content="Prenotazioni — R&S Parrucchieri. Prenota online il tuo appuntamento per un'esperienza di hair styling di lusso a Napoli.">
+    <meta name="keywords"
+        content="prenotazione parrucchiere online, appuntamento parrucchiere napoli, prenota salone bellezza">
+    <meta property="og:title" content="Prenota un Appuntamento — R&S Parrucchieri">
+    <meta property="og:description" content="Riserva il tuo momento di relax e bellezza presso R&S Parrucchieri.">
     <title>Prenotazioni — R&S Parrucchieri</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
 </head>
 
 <body>
@@ -46,7 +55,7 @@
             <div class="booking-layout">
 
                 <!-- Booking Form -->
-                <div class="form-card fade-in">
+                <div class="form-card reveal fade-right delay-100">
                     <h2>Dettagli Appuntamento</h2>
                     <p class="form-subtitle">Compila il form per prenotare il tuo slot esclusivo.</p>
                     <form id="bookingForm" data-custom-submit="true">
@@ -67,22 +76,31 @@
                             <input type="email" id="bookingEmail" class="form-input" placeholder="mario@email.com"
                                 required>
                         </div>
-                        <div class="form-group">
-                            <label for="bookingService">Servizio</label>
-                            <select id="bookingService" class="form-input" required>
-                                <option value="" disabled selected>Seleziona un servizio</option>
-                                <option value="taglio">Taglio Couture — €65</option>
-                                <option value="balayage">Balayage Signature — €120</option>
-                                <option value="keratina">Keratina Lux — €180</option>
-                                <option value="styling">Styling Eventi — €150</option>
-                                <option value="colore">Colore Organico — €90</option>
-                                <option value="spa">Spa Capillare — €95</option>
-                            </select>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bookingService">Servizio</label>
+                                <select id="bookingService" class="form-input" required>
+                                    <option value="" disabled selected>Seleziona un servizio</option>
+                                    <option value="taglio">Taglio Couture — €65</option>
+                                    <option value="balayage">Balayage Signature — €120</option>
+                                    <option value="keratina">Keratina Lux — €180</option>
+                                    <option value="styling">Styling Eventi — €150</option>
+                                    <option value="colore">Colore Organico — €90</option>
+                                    <option value="spa">Spa Capillare — €95</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="bookingStaff">Staff / Stylist</label>
+                                <select id="bookingStaff" class="form-input" required>
+                                    <option value="" disabled selected>Caricamento staff...</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="bookingDate">Data</label>
-                                <input type="date" id="bookingDate" class="form-input" required>
+                                <input type="text" id="bookingDate" class="form-input"
+                                    placeholder="Seleziona una data..." required>
                             </div>
                             <div class="form-group">
                                 <label for="bookingTime">Orario</label>
@@ -121,7 +139,7 @@
                 </div>
 
                 <!-- Sidebar -->
-                <div class="fade-in">
+                <div class="reveal fade-left delay-300">
                     <div class="sidebar-card">
                         <h3>
                             <span class="material-symbols-outlined">schedule</span>
@@ -231,16 +249,30 @@
                 </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <span>© 2024 R&S Parrucchieri • Eccellenza nel Hair Styling</span>
-            <span>Designed with ♥ in Napoli</span>
+        <div class="footer-bottom" style="display:flex; flex-direction:column; gap:0.5rem; align-items:center;">
+            <div style="display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center;">
+                <span>© 2024 R&S Parrucchieri. Eccellenza nel Hair Styling.</span>
+                <span>P.IVA: 01234567890</span>
+            </div>
+            <div style="display:flex; gap:1rem;">
+                <a href="privacy-policy.html"
+                    style="color:var(--text-muted); text-decoration:none; font-size:0.85rem; transition:0.3s;">Privacy &
+                    Cookie Policy</a>
+                <a href="privacy-policy.html#termini"
+                    style="color:var(--text-muted); text-decoration:none; font-size:0.85rem; transition:0.3s;">Termini e
+                    Condizioni</a>
+            </div>
+            <span style="font-size:0.8rem; margin-top:0.5rem;">Designed with ♥ in Napoli</span>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/it.js"></script>
     <script src="js/prenotazioni.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/chat.js"></script>
 </body>
 
 </html>
