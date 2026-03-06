@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Contattaci — R&S Parrucchieri. Inviaci un messaggio, trovaci a Napoli o consulta le nostre domande frequenti.">
+    <title>Contattaci — R&S Parrucchieri</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ═══ NAVBAR ═══ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">R&S <span>Parrucchieri</span></a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="servizi.html">Servizi</a>
+                <a href="team.html">Team</a>
+                <a href="prenotazioni.html">Prenotazioni</a>
+                <a href="contatti.html" class="active">Contatti</a>
+                <a href="prenotazioni.html" class="nav-cta">
+                    <span class="material-symbols-outlined" style="font-size:1rem">calendar_month</span>
+                    Prenota Ora
+                </a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══ PAGE HERO ═══ -->
+    <section class="page-hero">
+        <div class="section-tag">Contattaci</div>
+        <h1>Contattaci</h1>
+        <p>Siamo qui per prenderci cura della tua bellezza e regalarti un momento di puro benessere.</p>
+    </section>
+
+    <!-- ═══ CONTACT INFO CARDS ═══ -->
+    <section class="section" style="padding-top:0">
+        <div class="section-container">
+            <div class="contact-info-grid fade-in">
+                <div class="contact-info-card">
+                    <span class="material-symbols-outlined">location_on</span>
+                    <h4>Indirizzo</h4>
+                    <p>Via della Moda 12, 80100 Napoli (NA)</p>
+                </div>
+                <div class="contact-info-card">
+                    <span class="material-symbols-outlined">call</span>
+                    <h4>Telefono</h4>
+                    <p>+39 02 123 4567</p>
+                </div>
+                <div class="contact-info-card">
+                    <span class="material-symbols-outlined">mail</span>
+                    <h4>Email</h4>
+                    <p>info@rs-parrucchieri.it</p>
+                </div>
+                <div class="contact-info-card">
+                    <span class="material-symbols-outlined">schedule</span>
+                    <h4>Orari</h4>
+                    <p>Mar-Gio: 09-19 · Ven: 10-20 · Sab: 09-18</p>
+                </div>
+            </div>
+
+            <!-- ═══ CONTACT FORM + FAQ ═══ -->
+            <div class="contact-layout">
+
+                <!-- Contact Form -->
+                <div class="form-card fade-in">
+                    <h2>Inviaci un messaggio</h2>
+                    <p class="form-subtitle">Compila il form sottostante, ti risponderemo al più presto.</p>
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactName">Nome</label>
+                                <input type="text" id="contactName" class="form-input" placeholder="Il tuo nome"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">Email</label>
+                                <input type="email" id="contactEmail" class="form-input" placeholder="email@esempio.it"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactSubject">Oggetto</label>
+                            <input type="text" id="contactSubject" class="form-input"
+                                placeholder="Oggetto del messaggio">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Messaggio</label>
+                            <textarea id="contactMessage" class="form-input" rows="5"
+                                placeholder="Scrivi il tuo messaggio..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">
+                            Invia Messaggio
+                        </button>
+                    </form>
+                </div>
+
+                <!-- FAQ Section -->
+                <div class="fade-in">
+                    <h2
+                        style="font-size:1.5rem; font-weight:700; color:var(--color-white); margin-bottom:1.5rem; display:flex; align-items:center; gap:0.5rem;">
+                        <span class="material-symbols-outlined" style="color:var(--color-gold)">help</span>
+                        Domande Frequenti
+                    </h2>
+                    <div class="faq-section">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h4>Come posso prenotare un appuntamento?</h4>
+                                <span class="material-symbols-outlined">expand_more</span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-inner">
+                                    Puoi prenotare direttamente dalla nostra pagina <a href="prenotazioni.html"
+                                        style="color:var(--color-gold)">Prenotazioni</a>, telefonandoci al +39 02 123
+                                    4567, oppure inviandoci un messaggio tramite il form di contatto. Ti confermeremo
+                                    l'appuntamento via SMS.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h4>Quali metodi di pagamento accettate?</h4>
+                                <span class="material-symbols-outlined">expand_more</span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-inner">
+                                    Accettiamo tutte le principali carte di credito e debito (Visa, Mastercard, American
+                                    Express), contanti e Satispay. Per i trattamenti premium è disponibile anche il
+                                    pagamento rateale.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h4>Posso cancellare o modificare la prenotazione?</h4>
+                                <span class="material-symbols-outlined">expand_more</span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-inner">
+                                    Sì, puoi cancellare o modificare la tua prenotazione fino a 24 ore prima
+                                    dell'appuntamento contattandoci telefonicamente o via email senza alcun costo
+                                    aggiuntivo.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h4>Offrite consulenze gratuite?</h4>
+                                <span class="material-symbols-outlined">expand_more</span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-inner">
+                                    Assolutamente sì! Offriamo una consulenza iniziale gratuita di 15 minuti per
+                                    discutere il look desiderato, consigliare i trattamenti più adatti e creare un piano
+                                    personalizzato.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h4>I vostri prodotti sono biologici?</h4>
+                                <span class="material-symbols-outlined">expand_more</span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-inner">
+                                    Sì, utilizziamo esclusivamente prodotti biologici certificati e cruelty-free. Le
+                                    nostre linee di trattamento sono a base di ingredienti naturali, oli essenziali e
+                                    formulazioni vegane.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h4>Avete un parcheggio disponibile?</h4>
+                                <span class="material-symbols-outlined">expand_more</span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-inner">
+                                    Il salone è situato in una zona con parcheggio a pagamento nelle vicinanze. La
+                                    fermata della metropolitana più vicina è San Babila (M1), a soli 5 minuti a piedi.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="index.html" class="nav-logo">R&S <span>Parrucchieri</span></a>
+                <p>Dove l'eleganza incontra l'esperienza. Dedicati all'arte della bellezza dal 2014.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon" aria-label="Instagram"><span
+                            class="material-symbols-outlined">photo_camera</span></a>
+                    <a href="#" class="social-icon" aria-label="Facebook"><span
+                            class="material-symbols-outlined">share</span></a>
+                    <a href="#" class="social-icon" aria-label="Pinterest"><span
+                            class="material-symbols-outlined">push_pin</span></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Esplora</h4>
+                <ul>
+                    <li><a href="index.html">La Nostra Storia</a></li>
+                    <li><a href="servizi.html">Servizi Esclusivi</a></li>
+                    <li><a href="team.html">Stilisti Esperti</a></li>
+                    <li><a href="contatti.html">Carte Regalo</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Orari di Apertura</h4>
+                <ul>
+                    <li>Lun - Ven: 09:00 - 20:00</li>
+                    <li>Sabato: 08:00 - 18:00</li>
+                    <li>Domenica: Chiuso</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contattaci</h4>
+                <div class="footer-contact-item">
+                    <span class="material-symbols-outlined">location_on</span>
+                    <span>Via della Spiga, 15, Napoli</span>
+                </div>
+                <div class="footer-contact-item">
+                    <span class="material-symbols-outlined">call</span>
+                    <span>+39 02 123 4567</span>
+                </div>
+                <div class="footer-contact-item">
+                    <span class="material-symbols-outlined">mail</span>
+                    <span>concierge@luxesalon.it</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2024 R&S Parrucchieri. Tutti i diritti riservati.</span>
+            <span>Designed with ♥ in Napoli</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

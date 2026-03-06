@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxe Salon - Admin Portal</title>
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Admin Global Variables */
+        :root {
+            --admin-bg: #0d0d0d;
+            --admin-surface: #1a1a1a;
+            --admin-surface-hover: #252525;
+            --admin-border: rgba(212, 175, 55, 0.2);
+            --admin-text: #ffffff;
+            --admin-text-muted: #a0a0a0;
+            --admin-accent: #d4af37;
+            /* Gold */
+            --admin-danger: #ff4d4f;
+            --admin-success: #52c41a;
+            --admin-info: #1890ff;
+            --admin-warning: #faad14;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--admin-bg);
+            color: var(--admin-text);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* ----- LOGIN VIEW ----- */
+        #loginView {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+        }
+
+        .login-card {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid var(--admin-border);
+            padding: 3rem;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 420px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 300;
+        }
+
+        .login-header span {
+            color: var(--admin-accent);
+            font-weight: 600;
+        }
+
+        .login-header p {
+            color: var(--admin-text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--admin-text-muted);
+        }
+
+        /* ----- DASHBOARD LAYOUT ----- */
+        #dashboardView {
+            display: none;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .dashboard-layout {
+            display: flex;
+            height: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--admin-surface);
+            border-right: 1px solid var(--admin-border);
+            display: flex;
+            flex-direction: column;
+            z-index: 20;
+        }
+
+        .sidebar-header {
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--admin-border);
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .sidebar-header span {
+            color: var(--admin-accent);
+            font-weight: 600;
+        }
+
+        .sidebar-nav {
+            padding: 1.5rem 1rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            color: var(--admin-text-muted);
+            text-decoration: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: rgba(212, 175, 55, 0.05);
+            color: var(--admin-text);
+        }
+
+        .nav-item.active {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--admin-accent);
+            border-right: 4px solid var(--admin-accent);
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--admin-border);
+        }
+
+        .logout-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            background: transparent;
+            border: 1px solid var(--admin-border);
+            color: var(--admin-text);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 77, 79, 0.1);
+            border-color: var(--admin-danger);
+            color: var(--admin-danger);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            background: var(--admin-bg);
+            position: relative;
+        }
+
+        .topbar {
+            height: 80px;
+            padding: 0 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--admin-border);
+            background: rgba(13, 13, 13, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .topbar h1 {
+            font-size: 1.4rem;
+            margin: 0;
+            font-weight: 500;
+            color: var(--admin-text);
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--admin-text-muted);
+            font-size: 0.9rem;
+        }
+
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--admin-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .content-padding {
+            padding: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Hide elements */
+        .view-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--admin-surface);
+            border: 1px solid var(--admin-border);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 12px;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--admin-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon span {
+            font-size: 1.8rem;
+        }
+
+        .stat-info h3 {
+            font-size: 2rem;
+            margin: 0 0 0.2rem 0;
+            color: var(--admin-text);
+            font-weight: 600;
+        }
+
+        .stat-info p {
+            margin: 0;
+            color: var(--admin-text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Charts & Panels */
+        .panel-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 1024px) {
+            .panel-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--admin-surface);
+            border: 1px solid var(--admin-border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .panel-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 300px;
+        }
+
+        /* Tables */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            background: var(--admin-surface);
+            border: 1px solid var(--admin-border);
+            border-radius: 12px;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 1.2rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .admin-table th {
+            color: var(--admin-text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .admin-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .admin-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 0.35rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .badge-pending {
+            background: rgba(250, 173, 20, 0.15);
+            color: var(--admin-warning);
+            border: 1px solid rgba(250, 173, 20, 0.3);
+        }
+
+        .badge-confirmed {
+            background: rgba(82, 196, 26, 0.15);
+            color: var(--admin-success);
+            border: 1px solid rgba(82, 196, 26, 0.3);
+        }
+
+        .badge-completed {
+            background: rgba(24, 144, 255, 0.15);
+            color: var(--admin-info);
+            border: 1px solid rgba(24, 144, 255, 0.3);
+        }
+
+        .badge-cancelled {
+            background: rgba(255, 77, 79, 0.15);
+            color: var(--admin-danger);
+            border: 1px solid rgba(255, 77, 79, 0.3);
+        }
+
+        /* Forms & Controls */
+        input.form-control,
+        textarea.form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--admin-text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: 0.3s;
+        }
+
+        input.form-control:focus,
+        textarea.form-control:focus {
+            outline: none;
+            border-color: var(--admin-accent);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .flex-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-gold {
+            background: var(--admin-accent);
+            color: #000;
+        }
+
+        .btn-gold:hover {
+            background: #e6c551;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--admin-border);
+            color: var(--admin-text);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-danger-outline {
+            background: transparent;
+            border: 1px solid rgba(255, 77, 79, 0.5);
+            color: var(--admin-danger);
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            border-radius: 6px;
+        }
+
+        .btn-danger-outline:hover {
+            background: rgba(255, 77, 79, 0.1);
+        }
+
+        .btn-icon-action {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--admin-text);
+            cursor: pointer;
+            width: 34px;
+            height: 34px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-icon-action:hover {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--admin-accent);
+            border-color: var(--admin-accent);
+        }
+
+        .btn-icon-action.delete:hover {
+            background: rgba(255, 77, 79, 0.15);
+            color: var(--admin-danger);
+            border-color: var(--admin-danger);
+        }
+
+        /* Modal styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--admin-surface);
+            border: 1px solid var(--admin-border);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            padding: 2.5rem;
+            position: relative;
+            transform: scale(0.95);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--admin-text-muted);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--admin-text);
+        }
+
+        /* Utilities */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom Status Select */
+        select.badge {
+            appearance: none;
+            -webkit-appearance: none;
+            padding-right: 2rem;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.6rem center;
+            background-size: 1.2em;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        select.badge option {
+            background: var(--admin-surface);
+            color: var(--admin-text);
+        }
+
+        /* Toast Notifications */
+        #toastContainer {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: #2a2a2a;
+            color: #ffffff;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            border-left: 5px solid var(--admin-accent);
+            min-width: 300px;
+            font-weight: 500;
+        }
+
+        .toast.success {
+            border-left-color: var(--admin-success);
+        }
+
+        .toast.error {
+            border-left-color: var(--admin-danger);
+        }
+
+        .toast.info {
+            border-left-color: var(--admin-info);
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+
+        .toast.success .toast-icon {
+            color: var(--admin-success);
+        }
+
+        .toast.error .toast-icon {
+            color: var(--admin-danger);
+        }
+
+        .toast.info .toast-icon {
+            color: var(--admin-info);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+        }
+
+        /* Settings Card */
+        .settings-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .settings-card h4 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            color: var(--admin-accent);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-container .material-symbols-outlined {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--admin-text-muted);
+        }
+
+        .search-input {
+            padding-left: 3rem !important;
+        }
+
+        /* Print Styles */
+        @media print {
+
+            .sidebar,
+            .topbar,
+            .flex-between,
+            .panel-header button,
+            .btn,
+            .action-column {
+                display: none !important;
+            }
+
+            .main-content {
+                padding: 0 !important;
+                background: #fff !important;
+                color: #000 !important;
+            }
+
+            .admin-table th,
+            .admin-table td {
+                color: #000 !important;
+                border-bottom: 1px solid #ccc !important;
+            }
+
+            .badge {
+                border: 1px solid #000 !important;
+                background: transparent !important;
+                color: #000 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOGIN VIEW -->
+    <div id="loginView">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>R&S <span>Admin</span></h2>
+                <p>Inserisci le tue credenziali Staff</p>
+            </div>
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminEmail">Email</label>
+                    <input type="email" id="adminEmail" class="form-control" placeholder="staff@rsparrucchieri.it"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" class="form-control" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-gold"
+                    style="width: 100%; justify-content: center; margin-top: 1rem;">
+                    <span class="material-symbols-outlined">login</span> Accedi al Gestionale
+                </button>
+                <p id="loginError"
+                    style="color: var(--admin-danger); margin-top: 1rem; display: none; font-size: 0.9rem; text-align: center; font-weight: 500;">
+                </p>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="index.html"
+                        style="color: var(--admin-text-muted); text-decoration: none; font-size: 0.85rem;"><span
+                            class="material-symbols-outlined"
+                            style="font-size:1rem; vertical-align:middle;">arrow_back</span> Torna al sito
+                        principale</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DASHBOARD VIEW -->
+    <div id="dashboardView">
+        <div class="dashboard-layout">
+
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h2>R&S <span>Admin</span></h2>
+                </div>
+                <div class="sidebar-nav">
+                    <a class="nav-item active" data-target="dashboard">
+                        <span class="material-symbols-outlined">dashboard</span> Dashboard
+                    </a>
+                    <a class="nav-item" data-target="bookings">
+                        <span class="material-symbols-outlined">event_note</span> Prenotazioni
+                    </a>
+                    <a class="nav-item" data-target="services">
+                        <span class="material-symbols-outlined">spa</span> Servizi
+                    </a>
+                    <a class="nav-item" data-target="settings">
+                        <span class="material-symbols-outlined">settings</span> Impostazioni
+                    </a>
+                    <a href="index.html" class="nav-item"
+                        style="margin-top: 1rem; border: 1px dashed rgba(255,255,255,0.2);">
+                        <span class="material-symbols-outlined">language</span> Vai al Sito
+                    </a>
+                </div>
+                <div class="sidebar-footer">
+                    <button id="logoutBtn" class="logout-btn">
+                        <span class="material-symbols-outlined">logout</span> Esci
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="main-content">
+                <!-- Topbar -->
+                <header class="topbar">
+                    <h1 id="topbarTitle">Dashboard Overview</h1>
+                    <div class="admin-profile">
+                        <span id="adminUserEmail">staff@rsparrucchieri.it</span>
+                        <div class="admin-avatar">A</div>
+                    </div>
+                </header>
+
+                <div class="content-padding">
+
+                    <!-- 1. DASHBOARD OVERVIEW SECTION -->
+                    <section id="sec-dashboard" class="view-section active">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon"><span class="material-symbols-outlined">today</span></div>
+                                <div class="stat-info">
+                                    <h3 id="dashStatToday">0</h3>
+                                    <p>Appuntamenti Oggi</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon"
+                                    style="color: var(--admin-info); background: rgba(24, 144, 255, 0.1);"><span
+                                        class="material-symbols-outlined">event_upcoming</span></div>
+                                <div class="stat-info">
+                                    <h3 id="dashStatTomorrow">0</h3>
+                                    <p>Prenotazioni Domani</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon"
+                                    style="color: var(--admin-warning); background: rgba(250, 173, 20, 0.1);"><span
+                                        class="material-symbols-outlined">pending_actions</span></div>
+                                <div class="stat-info">
+                                    <h3 id="dashStatPending">0</h3>
+                                    <p>Nuove In Attesa</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon"
+                                    style="color: var(--admin-success); background: rgba(82, 196, 26, 0.1);"><span
+                                        class="material-symbols-outlined">inventory_2</span></div>
+                                <div class="stat-info">
+                                    <h3 id="dashStatTotal">0</h3>
+                                    <p>Prenotazioni Totali</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-grid">
+                            <div class="panel">
+                                <div class="panel-header">
+                                    <h3>Andamento Ultimi 7 Giorni</h3>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="bookingsChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="panel">
+                                <div class="panel-header">
+                                    <h3>Prossimi Arrivi (Oggi)</h3>
+                                </div>
+                                <div id="upcomingList" style="display:flex; flex-direction:column; gap:1rem;">
+                                    <!-- Populated JS -->
+                                    <p style="color: var(--admin-text-muted); font-size: 0.9rem;">Nessun arrivo in vista
+                                        per oggi.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+
+                    <!-- 2. BOOKINGS SECTION -->
+                    <section id="sec-bookings" class="view-section">
+                        <div class="flex-between" style="margin-bottom: 2rem;">
+                            <div class="search-container">
+                                <span class="material-symbols-outlined">search</span>
+                                <input type="text" id="searchBookings" class="form-control search-input"
+                                    placeholder="Cerca per nome, email, telefono...">
+                            </div>
+                            <div class="flex-row">
+                                <button class="btn btn-outline" id="exportCsvBtn">
+                                    <span class="material-symbols-outlined">download</span> Esporta CSV
+                                </button>
+                                <button class="btn btn-outline" onclick="window.print()">
+                                    <span class="material-symbols-outlined">print</span> Stampa
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table class="admin-table" id="bookingsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Data e Ora</th>
+                                        <th>Cliente</th>
+                                        <th>Contatto</th>
+                                        <th>Servizio Richiesto</th>
+                                        <th>Stato</th>
+                                        <th class="action-column" style="text-align:right;">Azioni</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="6" style="text-align:center;">Caricamento prenotazioni...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+
+                    <!-- 3. SERVICES SECTION -->
+                    <section id="sec-services" class="view-section">
+                        <div class="flex-between" style="margin-bottom: 2rem;">
+                            <div class="search-container">
+                                <span class="material-symbols-outlined">search</span>
+                                <input type="text" id="searchServices" class="form-control search-input"
+                                    placeholder="Cerca servizio o categoria...">
+                            </div>
+                            <button class="btn btn-gold" id="openServiceModalBtn">
+                                <span class="material-symbols-outlined">add</span> Nuovo Servizio
+                            </button>
+                        </div>
+
+                        <div class="table-container">
+                            <table class="admin-table" id="servicesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Nome Servizio</th>
+                                        <th>Categoria</th>
+                                        <th>Durata</th>
+                                        <th>Prezzo</th>
+                                        <th class="action-column" style="text-align:right;">Azioni</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="5" style="text-align:center;">Caricamento servizi...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+
+                    <!-- 4. SETTINGS SECTION -->
+                    <section id="sec-settings" class="view-section">
+                        <form id="settingsForm">
+                            <div class="flex-between" style="margin-bottom: 2rem;">
+                                <div>
+                                    <h2 style="margin: 0; font-size: 1.4rem;">Impostazioni Globali</h2>
+                                    <p style="color: var(--admin-text-muted); margin-top: 0.5rem; font-size: 0.9rem;">
+                                        Configura i dati di base che verranno mostrati sul sito pubblico.</p>
+                                </div>
+                                <button type="submit" class="btn btn-gold" id="saveSettingsBtn">
+                                    <span class="material-symbols-outlined">save</span> Salva Modifiche
+                                </button>
+                            </div>
+
+                            <div class="settings-card">
+                                <h4><span class="material-symbols-outlined"
+                                        style="vertical-align:bottom; margin-right:8px;">contact_mail</span> Recapiti e
+                                    Sede</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="contactPhone">Numero di Telefono Principale</label>
+                                        <input type="text" id="contactPhone" class="form-control"
+                                            placeholder="+39 000 0000000">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contactEmail">Indirizzo Email Ufficiale</label>
+                                        <input type="email" id="contactEmail" class="form-control"
+                                            placeholder="info@luxe.com">
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label for="contactAddress">Indirizzo Sede Fisica</label>
+                                    <input type="text" id="contactAddress" class="form-control"
+                                        placeholder="Via Roma 1, Milano">
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <h4><span class="material-symbols-outlined"
+                                        style="vertical-align:bottom; margin-right:8px;">schedule</span> Orari di
+                                    Apertura</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Lunedì</label>
+                                        <input type="text" id="hoursMon" class="form-control" placeholder="Chiuso">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Martedì</label>
+                                        <input type="text" id="hoursTue" class="form-control"
+                                            placeholder="09:00 - 19:00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Mercoledì</label>
+                                        <input type="text" id="hoursWed" class="form-control"
+                                            placeholder="09:00 - 19:00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Giovedì</label>
+                                        <input type="text" id="hoursThu" class="form-control"
+                                            placeholder="09:00 - 19:00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Venerdì</label>
+                                        <input type="text" id="hoursFri" class="form-control"
+                                            placeholder="09:00 - 19:00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sabato</label>
+                                        <input type="text" id="hoursSat" class="form-control"
+                                            placeholder="09:00 - 18:00">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Domenica</label>
+                                        <input type="text" id="hoursSun" class="form-control" placeholder="Chiuso">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </section>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="serviceModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeServiceModalBtn"><span
+                    class="material-symbols-outlined">close</span></button>
+            <h2 id="serviceModalTitle" style="margin-top:0; margin-bottom: 1.5rem;">Aggiungi Servizio</h2>
+            <form id="serviceForm">
+                <input type="hidden" id="serviceId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome del Servizio</label>
+                        <input type="text" id="serviceName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria (Es: Taglio, Spa, Colore)</label>
+                        <input type="text" id="serviceCategory" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Prezzo Consigliato (€)</label>
+                        <input type="number" id="servicePrice" class="form-control" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Durata Stimata (Minuti)</label>
+                        <input type="number" id="serviceDuration" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Descrizione al Pubblico</label>
+                    <textarea id="serviceDescription" class="form-control" rows="3"></textarea>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:1rem; margin-top:2rem;">
+                    <button type="button" class="btn btn-outline" id="cancelServiceBtn">Annulla</button>
+                    <button type="submit" class="btn btn-gold"><span class="material-symbols-outlined">check</span>
+                        Memorizza</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
