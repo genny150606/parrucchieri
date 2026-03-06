@@ -34,18 +34,18 @@ serve(async (req) => {
                 'Authorization': `Bearer ${RESEND_API_KEY}`
             },
             body: JSON.stringify({
-                from: 'R&S Parrucchieri <info@rsparrucchieri.it>',
+                from: 'Hair Love Parrucchieri <info@hairloveparrucchieri.it>',
                 to: [record.customer_email],
-                subject: 'Conferma della tua Prenotazione - R&S Parrucchieri',
+                subject: 'Conferma della tua Prenotazione - Hair Love Parrucchieri',
                 html: `
           <div style="font-family: sans-serif; color: #1a1a1a;">
-            <h1 style="color: #d4af37;">Grazie per averci scelto, ${record.customer_name}!</h1>
+            <h1 style="color: #c58c85;">Grazie per averci scelto, ${record.customer_name}!</h1>
             <p>La tua prenotazione è stata ricevuta con successo.</p>
             <p><strong>Data:</strong> ${record.booking_date}</p>
             <p><strong>Ora:</strong> ${record.booking_time}</p>
             <br/>
             <p>Ti aspettiamo nel nostro salone. Per qualsiasi modifica, contattaci telefonicamente.</p>
-            <p>Cordiali saluti,<br/>Il Team di R&S Parrucchieri</p>
+            <p>Cordiali saluti,<br/>Il Team di Hair Love Parrucchieri</p>
           </div>
         `
             })

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   R&S PARRUCCHIERI — Main JavaScript
+   HAIR LOVE PARRUCCHIERI — Main JavaScript
    ═══════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,7 +22,7 @@ function initPageTransitions() {
         <div class="luxury-layer luxury-layer-2 sweep-right"></div>
         <div class="luxury-layer luxury-layer-3 sweep-right"></div>
         <div class="luxury-logo-wrapper show">
-            <h2 class="curtain-logo">R&S <span>Parrucchieri</span></h2>
+            <img src="images/logo.png" alt="Hair Love Logo" class="curtain-logo-img">
         </div>
     `;
     document.body.appendChild(overlay);
@@ -76,7 +76,7 @@ function initPageTransitions() {
                     <div class="luxury-layer luxury-layer-2 sweep-enter"></div>
                     <div class="luxury-layer luxury-layer-3 sweep-enter"></div>
                     <div class="luxury-logo-wrapper">
-                        <h2 class="curtain-logo">R&S <span>Parrucchieri</span></h2>
+                        <img src="images/logo.png" alt="Hair Love Logo" class="curtain-logo-img">
                     </div>
                 `;
                 document.body.appendChild(exitOverlay);
